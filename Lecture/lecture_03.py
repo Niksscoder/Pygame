@@ -1,4 +1,4 @@
-# обработка событий 
+# keyboard events
 import pygame 
 
 pygame.init()
