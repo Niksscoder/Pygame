@@ -23,39 +23,42 @@ RED = (255, 0, 0)
 FPS = 60
 clock = pygame.time.Clock() # for FPS
 # for drawing some figures
-# flag about starting drawing
-flStartDraw = False
-#sp --> start drawing, ep --> end drawing
-sp=ep=None
+# if sp == None: for this case we don't draw rect yet
+# else --> draw
+sp = None
 
 screen.fill(WHITE)
 pygame.display.update()
 
-run = True
-while run:
+
+while 1:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             exit()
-        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            # start of drawing
-            flStartDraw = True
-            # get inf about position of cursor
-            sp = event.pos
-        # position of mouse
-        elif event.type == pygame.MOUSEMOTION:
-            if flStartDraw:
-                pos = event.pos
 
-                width = pos[0] - sp[0]
-                height = pos[1] - sp[1]
+        pressed = pygame.mouse.get_pressed()
+        # [0] index means that clicked down on the left button
+        if pressed[0]:
+            # return set of coordinates
+            pos = pygame.mouse.get_pos()
 
-                screen.fill(WHITE)
-                pygame.draw.rect(screen, RED, (sp[0], sp[1], width, height))
-                pygame.display.update()
-            elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
-                flStartDraw = False
+            if sp is None:
+                # if we haven't started drawing yet -->
+                # sp ==pos(start position)
+                sp = pos
+            width = pos[0] - sp[0]
+            height = pos[1] - sp[1]
+
+            screen.fill(WHITE)
+            pygame.draw.rect(screen, RED, (sp[0], sp[1], width, height))
+            pygame.display.update()
+        else:
+            sp = None
 
 
 
 
-clock.tick(FPS)
+
+
+
+    clock.tick(FPS)
